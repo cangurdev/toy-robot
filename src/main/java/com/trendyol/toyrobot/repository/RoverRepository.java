@@ -50,7 +50,7 @@ public class RoverRepository {
     }
 
     public List<Rover> findAll () {
-        String statement = "Select id, x, y, compass from rover";
+        String statement = "Select id, x, y, material from rover";
         QueryResult query = couchbaseCluster.query(statement);
         return query.rowsAs(Rover.class);
     }

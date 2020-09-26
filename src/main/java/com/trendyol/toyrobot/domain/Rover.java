@@ -1,5 +1,7 @@
 package com.trendyol.toyrobot.domain;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class Rover {
@@ -8,12 +10,14 @@ public class Rover {
     private int x;
     private int y;
     private Compass compass;
+    private List<Material> material;
 
     public Rover() {
         this.id = UUID.randomUUID().toString();
         this.x = 0;
         this.y = 0;
         this.compass = Compass.NORTH;
+        this.material = Arrays.asList(new Material("Ramazan"));
     }
 
     public Rover(int x, int y, Compass compass) {
@@ -21,6 +25,7 @@ public class Rover {
         this.x = x;
         this.y = y;
         this.compass = compass;
+        this.material = Arrays.asList(new Material("Muhammed"));
     }
 
     public void move() {
@@ -33,6 +38,7 @@ public class Rover {
         } else if (Compass.WEST.equals(this.compass)) {
             this.x = this.x - 1;
         }
+        this.material.add(new Material(this.compass.name()));
     }
 
     public void turnLeft() {
@@ -45,6 +51,7 @@ public class Rover {
         } else if (Compass.EAST.equals(this.compass)) {
             this.compass = Compass.NORTH;
         }
+        this.material.add(new Material(this.compass.name()));
     }
 
     public void turnRight() {
@@ -57,6 +64,7 @@ public class Rover {
         } else if (Compass.WEST.equals(this.compass)) {
             this.compass = Compass.NORTH;
         }
+        this.material.add(new Material(this.compass.name()));
     }
 
     public String getId() {
@@ -89,5 +97,13 @@ public class Rover {
 
     public void setCompass(Compass compass) {
         this.compass = compass;
+    }
+
+    public List<Material> getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(List<Material> material) {
+        this.material = material;
     }
 }

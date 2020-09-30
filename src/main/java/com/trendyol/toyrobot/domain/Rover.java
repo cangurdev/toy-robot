@@ -1,5 +1,9 @@
 package com.trendyol.toyrobot.domain;
 
+import com.trendyol.toyrobot.domain.move.Move;
+import com.trendyol.toyrobot.domain.move.MoveController;
+import com.trendyol.toyrobot.domain.move.NorthMove;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -11,6 +15,8 @@ public class Rover {
     private int y;
     private Compass compass;
     private List<Material> material;
+    private Move move;
+    MoveController moveController = new MoveController();
 
     public Rover() {
         this.id = UUID.randomUUID().toString();
@@ -18,6 +24,7 @@ public class Rover {
         this.y = 0;
         this.compass = Compass.NORTH;
         this.material = Arrays.asList(new Material("Ramazan"));
+        this.move = new NorthMove();
     }
 
     public Rover(int x, int y, Compass compass) {
@@ -26,45 +33,25 @@ public class Rover {
         this.y = y;
         this.compass = compass;
         this.material = Arrays.asList(new Material("Muhammed"));
+        this.move = moveController.getMove(this.compass);
     }
 
     public void move() {
-        if (Compass.NORTH.equals(this.compass)) {
-            this.y = this.y + 1;
-        } else if (Compass.EAST.equals(this.compass)) {
-            this.x = this.x + 1;
-        } else if (Compass.SOUTH.equals(this.compass)) {
-            this.y = this.y - 1;
-        } else if (Compass.WEST.equals(this.compass)) {
-            this.x = this.x - 1;
-        }
-        this.material.add(new Material(this.compass.name()));
+        this.x = move.moveForwardX(this.x);
+        this.y = move.moveForwardY(this.y);
+        //this.material.add(new Material(this.compass.name()));
     }
 
     public void turnLeft() {
-        if (Compass.NORTH.equals(this.compass)) {
-            this.compass = Compass.WEST;
-        } else if (Compass.WEST.equals(this.compass)) {
-            this.compass = Compass.SOUTH;
-        } else if (Compass.SOUTH.equals(this.compass)) {
-            this.compass = Compass.EAST;
-        } else if (Compass.EAST.equals(this.compass)) {
-            this.compass = Compass.NORTH;
-        }
-        this.material.add(new Material(this.compass.name()));
+        this.compass = move.turnLeft();
+        this.move = move.newMove();
+        //this.material.add(new Material(this.compass.name()));
     }
 
     public void turnRight() {
-        if (Compass.NORTH.equals(this.compass)) {
-            this.compass = Compass.EAST;
-        } else if (Compass.EAST.equals(this.compass)) {
-            this.compass = Compass.SOUTH;
-        } else if (Compass.SOUTH.equals(this.compass)) {
-            this.compass = Compass.WEST;
-        } else if (Compass.WEST.equals(this.compass)) {
-            this.compass = Compass.NORTH;
-        }
-        this.material.add(new Material(this.compass.name()));
+        this.compass = move.turnRight();
+        this.move = move.newMove();
+        //this.material.add(new Material(this.compass.name()));
     }
 
     public String getId() {
